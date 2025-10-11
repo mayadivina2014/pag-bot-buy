@@ -24,6 +24,7 @@
       --gold: #ffd166;
       --radius: 14px;
       --max-w: 1100px;
+      --notice-purple: linear-gradient(90deg,#4b0082,#6b2f9a);
     }
 
     html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
@@ -99,7 +100,7 @@
     .progress > i{
       display:block; height:100%; width:0%;
       background: linear-gradient(90deg,var(--accent-cyan),var(--accent-purple));
-      /* width will be animated by JS to match delay */
+      /* width animated by JS */
     }
 
     /* header */
@@ -180,7 +181,34 @@
 
     .separator{ height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); margin:12px 0; border-radius:4px; }
 
-    footer{ margin-top:22px; text-align:center; color:var(--muted); font-size:13px; }
+    /* Notice box at bottom */
+    .notice{
+      margin-top:18px;
+      border-radius:12px;
+      padding:14px 16px;
+      background: var(--notice-purple);
+      background-clip:padding-box;
+      color:#fff;
+      box-shadow:0 10px 30px rgba(75,0,130,0.18);
+      border:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .notice .icon{
+      font-size:22px;
+      margin-top:2px;
+      opacity:0.98;
+    }
+    .notice .text{ font-size:14px; line-height:1.4; opacity:0.98; }
+
+    footer{ margin-top:18px; text-align:left; color:var(--muted); font-size:13px; display:block; }
+    footer .owners{ margin-top:10px; color:#f0e6ff; font-weight:600; }
+
+    @media (max-width:600px){
+      .notice{ flex-direction:column; }
+      .notice .icon{ margin-top:0; }
+    }
   </style>
 </head>
 <body>
@@ -246,6 +274,16 @@
           <div class="rule"><div class="num">17</div><div class="txt"><strong>Uso de contenido con fines publicitarios.</strong> Los creadores de bots pueden usar capturas de mensajes <em>públicos</em> o interacciones con sus bots (incluyendo menciones con usernames) para promociones o la tienda. Queda prohibido usar DMs o datos personales sensibles.</div></div>
           <div class="rule"><div class="num">18</div><div class="txt"><strong>Compra de bots — aceptación.</strong> Al adquirir un bot, el usuario acepta que <strong>no habrá reembolsos ni devoluciones bajo ninguna circunstancia</strong>. En casos particulares, también se deberá aceptar la normativa del servidor principal de Bot Buy.</div></div>
         </div>
+
+        <!-- Aviso importante insertado justo abajo de las reglas -->
+        <div class="notice" role="status" aria-live="polite">
+          <div class="icon">⚖️</div>
+          <div class="text">
+            <strong>⚖️ Aviso importante —</strong> El equipo de <strong>Bot Buy</strong> se reserva el derecho de modificar, actualizar o añadir normas en cualquier momento, con el fin de mantener un ambiente seguro y funcional dentro del servidor.  
+            <br>🛡️ Al permanecer en este servidor, aceptas cumplir las normativas vigentes y futuras establecidas por el staff.
+          </div>
+        </div>
+
       </section>
 
       <!-- Aside: resumen / precios / join -->
@@ -282,7 +320,7 @@
     </div>
 
     <footer>
-      ¿Quieres versión imprimible, traducción o modo claro/oscuro alternable? Dímelo y lo dejo listo.
+      <div class="owners">Owners: nebulastriker0178 · mayadivina2014</div>
     </footer>
   </main>
 
@@ -298,30 +336,23 @@
 
       // animar la barra de progreso para que llene según el delay
       if (progressBar) {
-        // usar transición para animación suave acorde al delay
         progressBar.style.transition = `width ${delay}ms linear`;
-        // forzar reflow antes de cambiar (garantiza que la transición funcione)
         progressBar.getBoundingClientRect();
-        // llenar 100% en el tiempo definido
         progressBar.style.width = '100%';
       }
 
-      // función que oculta el preloader y muestra la página
       function hidePreloader() {
         pre.classList.add('hidden');
         main.style.opacity = '1';
         main.style.transform = 'translateY(0px)';
       }
 
-      // cuando la ventana termina de cargar recursos
       window.addEventListener('load', () => {
         const elapsed = Date.now() - startTime;
         const remaining = delay - elapsed;
-        // esperar lo que falte del delay (o 0 si ya pasó)
         setTimeout(hidePreloader, Math.max(0, remaining));
       });
 
-      // fallback: si por algún motivo load nunca ocurre, esconder después de delay + 1200ms
       setTimeout(() => {
         if (!pre.classList.contains('hidden')) {
           hidePreloader();
