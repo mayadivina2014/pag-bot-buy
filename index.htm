@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bot Buy — Reglamento Oficial</title>
+
+  <!-- Favicon (aparece en la pestaña) -->
+  <link rel="icon" href="Logo_pag.png" type="image/png" />
+  <link rel="apple-touch-icon" href="Logo_pag.png" />
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark: #071226;
+      --accent-cyan: #00c6ff;
+      --accent-purple: #7b4cff;
+      --accent-purple-dark-1: #3b0f4a;
+      --accent-purple-dark-2: #4b0082;
+      --card: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.78);
+      --gold: #ffd166;
+      --radius: 14px;
+      --max-w: 1100px;
+    }
+
+    html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{
+      background:#040714;
+      color:#eaf3ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Animated gradient background */
+    .bg-animated{
+      position:fixed; inset:0; z-index:-2;
+      background: linear-gradient(120deg, #06122a 0%, #0b2a4b 30%, #2b0e3f 60%, #180c2a 100%);
+      background-size: 300% 300%;
+      filter: blur(36px) saturate(120%);
+      animation: bgMove 14s linear infinite;
+      opacity:0.95;
+    }
+    @keyframes bgMove{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .bg-grid{
+      position:fixed; inset:0; z-index:-1;
+      background-image:
+        radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mix-blend-mode: overlay;
+      opacity:0.25;
+      pointer-events:none;
+    }
+
+    .wrap{ max-width:var(--max-w); margin:36px auto; padding:28px; box-sizing:border-box; }
+
+    /* Preloader */
+    .preloader{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(180deg, rgba(2,6,23,0.80), rgba(2,6,23,0.92));
+      backdrop-filter: blur(6px);
+      transition: opacity .45s ease, visibility .45s ease;
+    }
+    .preloader.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+
+    .loader-box{
+      width:360px; max-width:92%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px; padding:18px; display:flex; gap:14px; align-items:center;
+      box-shadow:0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .loader-logo{
+      width:72px; height:72px; border-radius:12px; overflow:hidden;
+      display:grid; place-items:center; background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));
+      box-shadow:0 6px 18px rgba(123,76,255,0.15);
+      transform-origin:center;
+      animation: logoSpin 3.6s linear infinite;
+      flex-shrink:0;
+    }
+    @keyframes logoSpin{ 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+    .loader-info{ flex:1; }
+    .loader-info h3{ margin:0; font-size:16px; color:#fff; letter-spacing:0.2px; }
+    .loader-info p{ margin:6px 0 0; font-size:13px; color:var(--muted); }
+
+    .progress{
+      margin-top:10px; height:8px; width:100%; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .progress > i{
+      display:block; height:100%; width:0%;
+      background: linear-gradient(90deg,var(--accent-cyan),var(--accent-purple));
+      /* width will be animated by JS to match delay */
+    }
+
+    /* header */
+    header{
+      display:flex; gap:18px; align-items:center; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 10px 36px rgba(2,6,23,0.45);
+    }
+    .brand{
+      display:flex; gap:14px; align-items:center;
+    }
+    .brand img{
+      width:72px; height:72px; border-radius:12px; object-fit:cover; display:block;
+      box-shadow:0 8px 26px rgba(10,20,40,0.5);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .brand .title{ line-height:1; margin:0; }
+    .brand h1{ margin:0; font-size:20px; font-weight:700; color:#fff; }
+    .brand p{ margin:2px 0 0; color:var(--muted); font-size:13px; }
+
+    /* header actions: prevent overflow and allow wrapping */
+    .header-actions{
+      margin-left:auto;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      min-width:0;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer;
+      text-decoration:none; color:white; border:1px solid rgba(255,255,255,0.04);
+      transition:transform .15s ease, box-shadow .15s ease;
+      white-space:nowrap;
+      box-sizing:border-box;
+      max-width:100%;
+    }
+    .btn-join{
+      background: linear-gradient(90deg, var(--accent-purple-dark-1), var(--accent-purple-dark-2));
+      box-shadow:0 12px 30px rgba(60,20,90,0.18);
+      color:#fff;
+      flex:0 0 auto;
+    }
+    .btn-join:hover{ transform:translateY(-3px); box-shadow:0 14px 34px rgba(60,20,90,0.25); }
+
+    .btn-plain{
+      background:transparent; color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* layout */
+    .layout{ margin-top:18px; display:grid; gap:18px; grid-template-columns: 1fr 360px; }
+    @media (max-width:980px){ .layout{ grid-template-columns:1fr; } }
+
+    .card{
+      background:var(--card); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 12px 34px rgba(2,6,23,0.45);
+    }
+
+    .card h2{ margin:0 0 10px 0; font-size:16px; color:var(--gold); }
+    .rules{ display:flex; flex-direction:column; gap:12px; max-height:64vh; overflow:auto; padding-right:6px; }
+
+    .rule{
+      display:flex; gap:12px; align-items:flex-start; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02);
+    }
+    .rule .num{
+      min-width:40px; height:40px; border-radius:8px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:grid; place-items:center; font-weight:700; color:var(--accent-cyan); border:1px solid rgba(255,255,255,0.03);
+    }
+    .rule .txt{ color:var(--muted); font-size:14px; line-height:1.5; }
+
+    .aside .price-list li{ margin-bottom:8px; color:var(--muted); }
+
+    .note{ color:#f7d6a6; font-size:13px; margin-top:10px; font-style:italic; }
+
+    .separator{ height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); margin:12px 0; border-radius:4px; }
+
+    footer{ margin-top:22px; text-align:center; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="bg-animated" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" role="status" aria-live="polite">
+    <div class="loader-box" aria-hidden="false">
+      <div class="loader-logo" aria-hidden="true">
+        <!-- usa la imagen Logo_pag.png en la raíz -->
+        <img src="Logo_pag.png" alt="Logo Bot Buy" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="loader-info">
+        <h3>Cargando Bot Buy…</h3>
+        <p>Preparando la tienda y el reglamento — un toque y estás listo.</p>
+        <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" id="mainContent" style="opacity:0; transform: translateY(8px); transition:opacity .6s ease, transform .6s ease;">
+    <!-- header -->
+    <header>
+      <div class="brand">
+        <img src="Logo_pag.png" alt="Bot Buy — Logo" />
+        <div class="title">
+          <h1>Bot Buy — Reglamento Principal</h1>
+          <p>Al comprar aceptas las normas. Lee con atención antes de proceder.</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a class="btn btn-plain" href="#" onclick="navigator.clipboard?.writeText(location.href);return false;" title="Copiar enlace">📋 Copiar enlace</a>
+        <!-- botón de unirse (header) con morado oscuro -->
+        <a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer">🎉 Unirse al Servidor Principal</a>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Rules column -->
+      <section class="card">
+        <h2>Reglamento</h2>
+        <div class="separator" aria-hidden="true"></div>
+
+        <div class="rules" id="rulesList">
+          <div class="rule"><div class="num">1</div><div class="txt"><strong>Prohibido crear o usar bots para raidear.</strong> No crear, vender ni usar bots para atacar o interrumpir otros servidores.</div></div>
+          <div class="rule"><div class="num">2</div><div class="txt"><strong>Responsabilidad del comprador.</strong> El uso del bot es <strong>responsabilidad exclusiva del comprador</strong>. El equipo de Bot Buy no responde por usos indebidos.</div></div>
+          <div class="rule"><div class="num">3</div><div class="txt"><strong>No ofrecemos hosting.</strong> El servidor no proporciona hosting. Recomendamos servicios externos (por ejemplo WispByte); el hosting es responsabilidad del comprador.</div></div>
+          <div class="rule"><div class="num">4</div><div class="txt"><strong>Respeto entre miembros.</strong> Mantén un ambiente respetuoso; faltas serán sancionadas según gravedad.</div></div>
+          <div class="rule"><div class="num">5</div><div class="txt"><strong>Prohibido compartir información personal.</strong> No publiques direcciones, contraseñas ni datos privados propios o de terceros.</div></div>
+          <div class="rule"><div class="num">6</div><div class="txt"><strong>No spam ni flood.</strong> Se prohíbe envío masivo, publicidad no autorizada o mensajes repetitivos.</div></div>
+          <div class="rule"><div class="num">7</div><div class="txt"><strong>Prohibido compartir bots maliciosos.</strong> No distribuir malware, spyware o bots que comprometan seguridad.</div></div>
+          <div class="rule"><div class="num">8</div><div class="txt"><strong>Cumple los Términos de Discord.</strong> Respeta los <a href="https://discord.com/terms" target="_blank" rel="noopener">Términos</a> y <a href="https://discord.com/guidelines" target="_blank" rel="noopener">Normas</a> de Discord.</div></div>
+          <div class="rule"><div class="num">9</div><div class="txt"><strong>Prohibido usar cuentas falsas o múltiples.</strong> No uses cuentas alternativas para evadir sanciones o estafar.</div></div>
+          <div class="rule"><div class="num">10</div><div class="txt"><strong>Reporta actividades sospechosas.</strong> Si ves algo fuera de norma, repórtalo al staff.</div></div>
+          <div class="rule"><div class="num">11</div><div class="txt"><strong>Obedece al equipo de moderación.</strong> Las decisiones del staff son finales; ignorar advertencias implica sanciones.</div></div>
+          <div class="rule"><div class="num">12</div><div class="txt"><strong>Prohibido contenido +18.</strong> NSFW, pornografía o enlaces +18 = kick o ban inmediato.</div></div>
+          <div class="rule"><div class="num">13</div><div class="txt"><strong>Soporte limitado para bots comprados.</strong> ✔️ 1 mes de soporte técnico desde la entrega. ✔️ Nuevos comandos: hasta 2 meses. ⚠️ Problemas críticos (no enciende/no responde) tendrán soporte sin límite.</div></div>
+          <div class="rule"><div class="num">14</div><div class="txt"><strong>Responsabilidad en alianzas del staff.</strong> El staff que haga alianzas debe mantener enlaces activos y actualizados.</div></div>
+          <div class="rule"><div class="num">15</div><div class="txt"><strong>Propietarios oficiales.</strong> Owners: <strong>nebulastriker0178</strong> y <strong>mayadivina2014</strong>. Suplantar identidad = ban (2 semanas o permanente). Si es staff, expulsión.</div></div>
+          <div class="rule"><div class="num">16</div><div class="txt"><strong>Prohibido el perfeccionismo excesivo.</strong> Si el perfeccionismo provoca estrés, retrasos o afecta al grupo, el staff puede intervenir. Objetivo: crear, colaborar y disfrutar.</div></div>
+          <div class="rule"><div class="num">17</div><div class="txt"><strong>Uso de contenido con fines publicitarios.</strong> Los creadores de bots pueden usar capturas de mensajes <em>públicos</em> o interacciones con sus bots (incluyendo menciones con usernames) para promociones o la tienda. Queda prohibido usar DMs o datos personales sensibles.</div></div>
+          <div class="rule"><div class="num">18</div><div class="txt"><strong>Compra de bots — aceptación.</strong> Al adquirir un bot, el usuario acepta que <strong>no habrá reembolsos ni devoluciones bajo ninguna circunstancia</strong>. En casos particulares, también se deberá aceptar la normativa del servidor principal de Bot Buy.</div></div>
+        </div>
+      </section>
+
+      <!-- Aside: resumen / precios / join -->
+      <aside class="card aside">
+        <h2>Resumen rápido</h2>
+        <p style="color:var(--muted);font-size:14px;margin:6px 0 12px 0;">Compra = aceptas las reglas. No reembolsos. Respeta la privacidad y las normas del servidor principal cuando aplique.</p>
+
+        <div style="margin-top:8px;">
+          <h2 style="font-size:13px;margin-bottom:8px;color:#bfefff;">Tipos de Bots</h2>
+          <ul class="price-list" style="padding-left:18px;margin:0 0 12px 0;">
+            <li>Bot Básico — <strong>80 Robux</strong> · 5 comandos</li>
+            <li>Bot Medio — <strong>150 Robux</strong> · 10 comandos</li>
+            <li>Bot Intermedio — <strong>250 Robux</strong> · 18 comandos</li>
+            <li>Bot Avanzado — <strong>400 Robux</strong> · 28 comandos</li>
+            <li>Bot Premium — <strong>650 Robux</strong> · 48 comandos + integraciones</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:6px;">
+          <h2 style="font-size:13px;margin-bottom:8px;color:#bfefff;">Soporte</h2>
+          <p style="color:var(--muted);font-size:14px;margin:0;">
+            ✔️ 1 mes de soporte desde la entrega.<br>
+            ✔️ Actualizaciones por hasta 2 meses.<br>
+            ⚠️ Problemas críticos: soporte sin límite.
+          </p>
+        </div>
+
+        <div style="margin-top:14px;">
+          <a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:100%;text-align:center;">🎉 Unirse al Servidor Principal</a>
+        </div>
+
+        <div class="note">Owners: <strong>nebulastriker0178</strong> · <strong>mayadivina2014</strong></div>
+      </aside>
+    </div>
+
+    <footer>
+      ¿Quieres versión imprimible, traducción o modo claro/oscuro alternable? Dímelo y lo dejo listo.
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      const pre = document.getElementById('preloader');
+      const main = document.getElementById('mainContent');
+      const progressBar = document.getElementById('progressBar');
+
+      // generar un delay aleatorio entre 5000ms y 7000ms
+      const delay = Math.floor(5000 + Math.random() * 2000);
+      const startTime = Date.now();
+
+      // animar la barra de progreso para que llene según el delay
+      if (progressBar) {
+        // usar transición para animación suave acorde al delay
+        progressBar.style.transition = `width ${delay}ms linear`;
+        // forzar reflow antes de cambiar (garantiza que la transición funcione)
+        progressBar.getBoundingClientRect();
+        // llenar 100% en el tiempo definido
+        progressBar.style.width = '100%';
+      }
+
+      // función que oculta el preloader y muestra la página
+      function hidePreloader() {
+        pre.classList.add('hidden');
+        main.style.opacity = '1';
+        main.style.transform = 'translateY(0px)';
+      }
+
+      // cuando la ventana termina de cargar recursos
+      window.addEventListener('load', () => {
+        const elapsed = Date.now() - startTime;
+        const remaining = delay - elapsed;
+        // esperar lo que falte del delay (o 0 si ya pasó)
+        setTimeout(hidePreloader, Math.max(0, remaining));
+      });
+
+      // fallback: si por algún motivo load nunca ocurre, esconder después de delay + 1200ms
+      setTimeout(() => {
+        if (!pre.classList.contains('hidden')) {
+          hidePreloader();
+        }
+      }, delay + 1200);
+
+    })();
+  </script>
+</body>
+</html>
