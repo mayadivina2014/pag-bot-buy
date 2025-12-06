@@ -14,290 +14,162 @@
 
   <style>
     :root{
-      --bg-dark: #071226;
+      --bg-0: #040714;
+      --card: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.78);
       --accent-cyan: #00c6ff;
       --accent-purple: #7b4cff;
-      --accent-purple-dark-1: #3b0f4a;
-      --accent-purple-dark-2: #4b0082;
-      --card: rgba(255,255,255,0.04);
-      --muted: rgba(255,255,255,0.78);
       --gold: #ffd166;
       --radius: 14px;
-      --max-w: 1100px;
-      --notice-purple: linear-gradient(90deg,#4b0082,#6b2f9a);
+      --max-w: 1120px;
     }
 
-    html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
-    body{
-      background:#040714;
-      color:#eaf3ff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial;background:var(--bg-0);color:#eaf3ff}
 
-    /* Animated gradient background */
-    .bg-animated{
-      position:fixed; inset:0; z-index:-2;
-      background: linear-gradient(120deg, #06122a 0%, #0b2a4b 30%, #2b0e3f 60%, #180c2a 100%);
-      background-size: 300% 300%;
-      filter: blur(36px) saturate(120%);
-      animation: bgMove 14s linear infinite;
-      opacity:0.95;
-    }
-    @keyframes bgMove{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
+    /* subtle animated backdrop */
+    .bg-animated{position:fixed;inset:0;z-index:-3;background:linear-gradient(120deg,#06122a 0%,#0b2a4b 35%,#2b0e3f 65%,#180c2a 100%);background-size:300% 300%;filter:blur(30px) saturate(120%);opacity:0.95;animation:moveBg 16s linear infinite}
+    @keyframes moveBg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .bg-grid{position:fixed;inset:0;z-index:-2;background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);background-size:60px 60px;mix-blend-mode:overlay;opacity:0.18}
 
-    .bg-grid{
-      position:fixed; inset:0; z-index:-1;
-      background-image:
-        radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mix-blend-mode: overlay;
-      opacity:0.25;
-      pointer-events:none;
-    }
+    .wrap{max-width:var(--max-w);margin:36px auto;padding:22px}
 
-    .wrap{ max-width:var(--max-w); margin:36px auto; padding:28px; box-sizing:border-box; }
+    header{display:flex;gap:18px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 36px rgba(2,6,23,0.45)}
+    .brand{display:flex;gap:14px;align-items:center}
+    .brand img{width:68px;height:68px;border-radius:12px;object-fit:cover;border:1px solid rgba(255,255,255,0.03)}
+    .brand h1{margin:0;font-size:20px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
 
-    /* Preloader */
-    .preloader{
-      position:fixed; inset:0; z-index:9999;
-      display:flex; align-items:center; justify-content:center;
-      background: linear-gradient(180deg, rgba(2,6,23,0.80), rgba(2,6,23,0.92));
-      backdrop-filter: blur(6px);
-      transition: opacity .45s ease, visibility .45s ease;
-    }
-    .preloader.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+    .header-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;font-weight:600;cursor:pointer;text-decoration:none;color:white;border:1px solid rgba(255,255,255,0.04)}
+    .btn-join{background:linear-gradient(90deg,#4b0082,#6b2f9a);box-shadow:0 12px 30px rgba(60,20,90,0.18)}
+    .btn-plain{background:transparent;color:var(--muted)}
 
-    .loader-box{
-      width:360px; max-width:92%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:16px; padding:18px; display:flex; gap:14px; align-items:center;
-      box-shadow:0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.04);
-    }
-    .loader-logo{
-      width:72px; height:72px; border-radius:12px; overflow:hidden;
-      display:grid; place-items:center; background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));
-      box-shadow:0 6px 18px rgba(123,76,255,0.15);
-      transform-origin:center;
-      animation: logoSpin 3.6s linear infinite;
-      flex-shrink:0;
-    }
-    @keyframes logoSpin{ 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    .layout{margin-top:18px;display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media (max-width:980px){.layout{grid-template-columns:1fr}}
 
-    .loader-info{ flex:1; }
-    .loader-info h3{ margin:0; font-size:16px; color:#fff; letter-spacing:0.2px; }
-    .loader-info p{ margin:6px 0 0; font-size:13px; color:var(--muted); }
+    .card{background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 12px 34px rgba(2,6,23,0.45)}
+    .card h2{margin:0 0 10px 0;color:var(--gold)}
 
-    .progress{
-      margin-top:10px; height:8px; width:100%; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-    .progress > i{
-      display:block; height:100%; width:0%;
-      background: linear-gradient(90deg,var(--accent-cyan),var(--accent-purple));
-      /* width animated by JS */
-    }
+    /* rules list */
+    .controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .search{flex:1;display:flex;gap:8px}
+    .search input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);outline:none}
+    .controls .small{padding:8px 10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);cursor:pointer}
 
-    /* header */
-    header{
-      display:flex; gap:18px; align-items:center; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      padding:18px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.04);
-      box-shadow:0 10px 36px rgba(2,6,23,0.45);
-    }
-    .brand{
-      display:flex; gap:14px; align-items:center;
-    }
-    .brand img{
-      width:72px; height:72px; border-radius:12px; object-fit:cover; display:block;
-      box-shadow:0 8px 26px rgba(10,20,40,0.5);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .brand .title{ line-height:1; margin:0; }
-    .brand h1{ margin:0; font-size:20px; font-weight:700; color:#fff; }
-    .brand p{ margin:2px 0 0; color:var(--muted); font-size:13px; }
+    .rules{display:flex;flex-direction:column;gap:12px;max-height:66vh;overflow:auto;padding-right:6px}
+    .rule{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);transition:transform .12s ease,box-shadow .12s ease}
+    .rule:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+    .num{height:48px;width:48px;border-radius:12px;display:grid;place-items:center;font-weight:700;color:#fff;background:linear-gradient(180deg,var(--accent-cyan),var(--accent-purple));box-shadow:0 6px 18px rgba(123,76,255,0.12)}
+    .txt{color:var(--muted);font-size:14px;line-height:1.45}
+    .txt a{color:#d6b6ff}
 
-    /* header actions: prevent overflow and allow wrapping */
-    .header-actions{
-      margin-left:auto;
-      display:flex;
-      gap:12px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      min-width:0;
-    }
+    .notice{margin-top:16px;padding:12px;border-radius:12px;background:linear-gradient(90deg,#4b0082,#6b2f9a);color:#fff}
 
-    .btn{
-      display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer;
-      text-decoration:none; color:white; border:1px solid rgba(255,255,255,0.04);
-      transition:transform .15s ease, box-shadow .15s ease;
-      white-space:nowrap;
-      box-sizing:border-box;
-      max-width:100%;
-    }
-    .btn-join{
-      background: linear-gradient(90deg, var(--accent-purple-dark-1), var(--accent-purple-dark-2));
-      box-shadow:0 12px 30px rgba(60,20,90,0.18);
-      color:#fff;
-      flex:0 0 auto;
-    }
-    .btn-join:hover{ transform:translateY(-3px); box-shadow:0 14px 34px rgba(60,20,90,0.25); }
+    aside .price-list li{margin-bottom:8px;color:var(--muted)}
+    .note{color:#f7d6a6;font-size:13px;margin-top:10px}
 
-    .btn-plain{
-      background:transparent; color:var(--muted);
-      border:1px solid rgba(255,255,255,0.03);
-    }
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
 
-    /* layout */
-    .layout{ margin-top:18px; display:grid; gap:18px; grid-template-columns: 1fr 360px; }
-    @media (max-width:980px){ .layout{ grid-template-columns:1fr; } }
-
-    .card{
-      background:var(--card); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.04);
-      box-shadow:0 12px 34px rgba(2,6,23,0.45);
-    }
-
-    .card h2{ margin:0 0 10px 0; font-size:16px; color:var(--gold); }
-    .rules{ display:flex; flex-direction:column; gap:12px; max-height:64vh; overflow:auto; padding-right:6px; }
-
-    .rule{
-      display:flex; gap:12px; align-items:flex-start; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02);
-    }
-    .rule .num{
-      min-width:40px; height:40px; border-radius:8px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      display:grid; place-items:center; font-weight:700; color:var(--accent-cyan); border:1px solid rgba(255,255,255,0.03);
-    }
-    .rule .txt{ color:var(--muted); font-size:14px; line-height:1.5; }
-
-    .aside .price-list li{ margin-bottom:8px; color:var(--muted); }
-
-    .note{ color:#f7d6a6; font-size:13px; margin-top:10px; font-style:italic; }
-
-    .separator{ height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); margin:12px 0; border-radius:4px; }
-
-    /* Notice box at bottom */
-    .notice{
-      margin-top:18px;
-      border-radius:12px;
-      padding:14px 16px;
-      background: var(--notice-purple);
-      background-clip:padding-box;
-      color:#fff;
-      box-shadow:0 10px 30px rgba(75,0,130,0.18);
-      border:1px solid rgba(255,255,255,0.04);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .notice .icon{
-      font-size:22px;
-      margin-top:2px;
-      opacity:0.98;
-    }
-    .notice .text{ font-size:14px; line-height:1.4; opacity:0.98; }
-
-    footer{ margin-top:18px; text-align:left; color:var(--muted); font-size:13px; display:block; }
-    footer .owners{ margin-top:10px; color:#f0e6ff; font-weight:600; }
-
-    @media (max-width:600px){
-      .notice{ flex-direction:column; }
-      .notice .icon{ margin-top:0; }
-    }
+    /* responsive adjustments for mobile */
+    @media (max-width:520px){.num{height:40px;width:40px;font-size:14px}.rule{grid-template-columns:44px 1fr}}
   </style>
 </head>
 <body>
   <div class="bg-animated" aria-hidden="true"></div>
   <div class="bg-grid" aria-hidden="true"></div>
 
-  <!-- Preloader -->
-  <div id="preloader" class="preloader" role="status" aria-live="polite">
-    <div class="loader-box" aria-hidden="false">
-      <div class="loader-logo" aria-hidden="true">
-        <!-- usa la imagen Logo_pag.png en la raíz -->
-        <img src="Logo_pag.png" alt="Logo Bot Buy" style="width:100%;height:100%;object-fit:cover;">
-      </div>
-      <div class="loader-info">
-        <h3>Cargando Bot Buy…</h3>
-        <p>Preparando la tienda y el reglamento — un toque y estás listo.</p>
-        <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
-      </div>
-    </div>
-  </div>
-
-  <main class="wrap" id="mainContent" style="opacity:0; transform: translateY(8px); transition:opacity .6s ease, transform .6s ease;">
-    <!-- header -->
+  <main class="wrap">
     <header>
       <div class="brand">
         <img src="Logo_pag.png" alt="Bot Buy — Logo" />
-        <div class="title">
-          <h1>Bot Buy — Reglamento Principal</h1>
+        <div>
+          <h1>Bot Buy — Reglamento Oficial</h1>
           <p>Al comprar aceptas las normas. Lee con atención antes de proceder.</p>
         </div>
       </div>
 
       <div class="header-actions">
         <a class="btn btn-plain" href="#" onclick="navigator.clipboard?.writeText(location.href);return false;" title="Copiar enlace">📋 Copiar enlace</a>
-        <!-- botón de unirse (header) con morado oscuro -->
-        <a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer">🎉 Unirse al Servidor Principal</a>
+        <button class="btn btn-plain" onclick="printRules()" title="Imprimir">🖨️ Imprimir</button>
+        <a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer">🎉 Unirse</a>
       </div>
     </header>
 
     <div class="layout">
-      <!-- Rules column -->
-      <section class="card">
-        <h2>Reglamento</h2>
-        <div class="separator" aria-hidden="true"></div>
+      <section class="card" aria-labelledby="reglamento">
+        <h2 id="reglamento">Reglamento</h2>
+
+        <div class="controls">
+          <div class="search">
+            <input id="searchInput" placeholder="Buscar regla (ej: reembolsos, hosting, obtener soporte)" aria-label="Buscar reglas" />
+          </div>
+          <button class="small" id="copyBtn">📋 Copiar reglas</button>
+        </div>
 
         <div class="rules" id="rulesList">
-          <div class="rule"><div class="num">1</div><div class="txt"><strong>Prohibido crear o usar bots para raidear.</strong> No está permitido crear, vender o usar bots para atacar o interrumpir otros servidores.</div></div>
-          <div class="rule"><div class="num">2</div><div class="txt"><strong>Responsabilidad del comprador.</strong> El uso de un bot adquirido es <strong>responsabilidad exclusiva del comprador.</strong> <em>El equipo de “Bot Buy” no se hace responsable de usos indebidos.</em></div></div>
-          <div class="rule"><div class="num">3</div><div class="txt"><strong>No ofrecemos hosting.</strong> Este servidor <strong>no proporciona hosting.</strong> Recomendamos servicios externos (por ejemplo WispByte); el hosting y su mantenimiento son responsabilidad del comprador.</div></div>
-          <div class="rule"><div class="num">4</div><div class="txt"><strong>Respeto entre miembros.</strong> Mantén un ambiente respetuoso. Las faltas serán sancionadas según su gravedad.</div></div>
-          <div class="rule"><div class="num">5</div><div class="txt"><strong>Prohibido compartir información personal.</strong> No compartas datos propios o de terceros (direcciones, contraseñas, números de contacto, etc.).</div></div>
-          <div class="rule"><div class="num">6</div><div class="txt"><strong>No spam ni flood.</strong> Se prohíbe el envío masivo, publicidad no autorizada o mensajes repetitivos.</div></div>
-          <div class="rule"><div class="num">7</div><div class="txt"><strong>Prohibido compartir bots maliciosos.</strong> No está permitido distribuir malware, spyware o bots que comprometan la seguridad.</div></div>
-          <div class="rule"><div class="num">8</div><div class="txt"><strong>Cumple los Términos de Discord.</strong> Respeta los <a href="https://discord.com/terms" target="_blank" rel="noopener">Términos</a> y <a href="https://discord.com/guidelines" target="_blank" rel="noopener">Normas</a> de Discord.</div></div>
-          <div class="rule"><div class="num">9</div><div class="txt"><strong>Prohibido usar cuentas falsas o múltiples.</strong> No uses cuentas alternas para evadir sanciones o realizar estafas.</div></div>
-          <div class="rule"><div class="num">10</div><div class="txt"><strong>Reporta actividades sospechosas.</strong> Si ves algo fuera de norma, repórtalo al staff.</div></div>
-          <div class="rule"><div class="num">11</div><div class="txt"><strong>Obedece al equipo de moderación.</strong> Las decisiones del staff son finales. Ignorar advertencias traerá sanciones.</div></div>
-          <div class="rule"><div class="num">12</div><div class="txt"><strong>Prohibido contenido +18.</strong> NSFW, pornografía o enlaces +18 = <em>kick</em> o <em>ban</em> inmediato.</div></div>
-          <div class="rule"><div class="num">13</div><div class="txt"><strong>Soporte limitado para bots comprados.</strong> ✔️ 1 mes de soporte técnico desde la entrega. ✔️ Nuevos comandos: hasta 2 meses después de la compra. ⚠️ <em>Problemas críticos (no enciende/no responde) tendrán soporte sin límite, siempre que el bot mantenga su versión original y no haya sido modificado por terceros.</em></div></div>
-          <div class="rule"><div class="num">14</div><div class="txt"><strong>Responsabilidad en alianzas del staff.</strong> El staff que haga alianzas debe mantener los enlaces activos y actualizados.</div></div>
-          <div class="rule"><div class="num">15</div><div class="txt"><strong>Propietarios oficiales.</strong> Owners: <strong>nebulastriker0178</strong> y <strong>mayadivina2014</strong>. 🚫 Suplantar identidad = <strong>ban 2 semanas o permanente</strong>. ⚠️ Si la persona suplantada es staff, será expulsada del equipo.</div></div>
-          <div class="rule"><div class="num">16</div><div class="txt"><strong>Prohibido el perfeccionismo excesivo.</strong> El perfeccionismo puede causar estrés, retrasos y agotamiento. Si afecta al grupo, el staff puede intervenir. Objetivo: crear, colaborar y disfrutar.</div></div>
-          <div class="rule"><div class="num">17</div><div class="txt"><strong>Uso de contenido con fines publicitarios.</strong> Los <strong>creadores de bots</strong> pueden usar capturas de mensajes <em>públicos</em> o interacciones con sus bots para publicidad o demos. <strong>No</strong> incluye conversaciones privadas (DMs) ni datos personales sensibles.</div></div>
-          <div class="rule"><div class="num">18</div><div class="txt"><strong>Pago obligatorio antes de recibir el producto.</strong> Ningún bot o servicio será entregado antes del pago completo. Todo pedido implica una compra confirmada y no se realizará trabajo previo sin comprobante.</div></div>
-          <div class="rule"><div class="num">19</div><div class="txt"><strong>Reembolsos y cancelaciones.</strong> No se realizan devoluciones una vez entregado el producto. Solo se evaluará un reembolso si el bot no cumple funciones básicas prometidas <strong>y</strong> el fallo no es culpa del cliente (por ejemplo, falta de datos, configuraciones externas o uso indebido).</div></div>
-          <div class="rule"><div class="num">20</div><div class="txt"><strong>Propiedad del código y uso comercial.</strong> El código de los bots vendidos sigue siendo <strong>propiedad de “Bot Buy”</strong>, a menos que se acuerde por escrito lo contrario. 🚫 Está prohibido revender, redistribuir o modificar el bot para uso comercial sin autorización del creador.</div></div>
-          <div class="rule"><div class="num">21</div><div class="txt"><strong>Tiempos de entrega.</strong> El plazo de entrega dependerá de la complejidad del pedido <strong>y del tiempo disponible del creador.</strong> Se informará al comprador antes del pago; los plazos pueden variar por solicitudes adicionales o alta carga de trabajo.</div></div>
-          <div class="rule"><div class="num">22</div><div class="txt"><strong>Créditos del creador.</strong> El comprador no puede eliminar, ocultar ni modificar créditos del autor dentro del bot. Respetar el trabajo ajeno es parte del trato.</div></div>
+          <div class="rule"><div class="num">1</div><div class="txt"><strong>❌ Prohibido crear o usar bots para raidear.</strong> No está permitido crear, vender o usar bots para atacar o interrumpir otros servidores.</div></div>
+          <div class="rule"><div class="num">2</div><div class="txt"><strong>🛡️ Responsabilidad del comprador.</strong> El uso de un bot adquirido es <strong>responsabilidad exclusiva del comprador.</strong> <em>El equipo de “Bot Buy” no se hace responsable de usos indebidos.</em></div></div>
+
+          <div class="rule"><div class="num">3</div><div class="txt"><strong>📦 No ofrecemos hosting.</strong> Este servidor <strong>no proporciona hosting.</strong> Recomendamos: <a href="https://wispbyte.com/" target="_blank" rel="noopener">WispByte</a> (hosting gratuito, pero con posibles caídas). El hosting y su mantenimiento son responsabilidad del comprador.</div></div>
+
+          <div class="rule"><div class="num">4</div><div class="txt"><strong>🤝 Respeto entre miembros.</strong> Mantén un ambiente respetuoso. Las faltas serán sancionadas según su gravedad.</div></div>
+
+          <div class="rule"><div class="num">5</div><div class="txt"><strong>🔒 Prohibido compartir información personal.</strong> No compartas datos propios o de terceros (direcciones, contraseñas, números de contacto, etc.).</div></div>
+
+          <div class="rule"><div class="num">6</div><div class="txt"><strong>📵 No spam ni flood.</strong> Se prohíbe el envío masivo, publicidad no autorizada o mensajes repetitivos.</div></div>
+
+          <div class="rule"><div class="num">7</div><div class="txt"><strong>🚫 Prohibido compartir bots maliciosos.</strong> No está permitido distribuir malware, spyware o bots que comprometan la seguridad.</div></div>
+
+          <div class="rule"><div class="num">8</div><div class="txt"><strong>📜 Cumple los Términos de Discord.</strong> Respeta los <a href="https://discord.com/terms" target="_blank" rel="noopener">Términos</a> y <a href="https://discord.com/guidelines" target="_blank" rel="noopener">Normas</a> de Discord.</div></div>
+
+          <div class="rule"><div class="num">9</div><div class="txt"><strong>👤 Prohibido usar cuentas falsas o múltiples.</strong> No uses cuentas alternas para evadir sanciones o realizar estafas.</div></div>
+
+          <div class="rule"><div class="num">10</div><div class="txt"><strong>🔎 Reporta actividades sospechosas.</strong> Si ves algo fuera de norma, repórtalo al staff.</div></div>
+
+          <div class="rule"><div class="num">11</div><div class="txt"><strong>📣 Obedece al equipo de moderación.</strong> Las decisiones del staff son finales. Ignorar advertencias traerá sanciones.</div></div>
+
+          <div class="rule"><div class="num">12</div><div class="txt"><strong>🔞 Prohibido contenido +18.</strong> NSFW, pornografía o enlaces +18 = <em>kick</em> o <em>ban</em> inmediato.</div></div>
+
+          <div class="rule"><div class="num">13</div><div class="txt"><strong>🛠️ Soporte limitado para bots comprados.</strong> ✔️ 1 mes de soporte técnico desde la entrega. ✔️ Nuevos comandos: hasta 2 meses después de la compra. ⚠️ <em>Problemas críticos (no enciende/no responde) tendrán soporte sin límite, siempre que el bot mantenga su versión original y no haya sido modificado por terceros.</em></div></div>
+
+          <div class="rule"><div class="num">14</div><div class="txt"><strong>🔗 Responsabilidad en alianzas del staff.</strong> El staff que haga alianzas debe mantener los enlaces activos y actualizados.</div></div>
+
+          <div class="rule"><div class="num">15</div><div class="txt"><strong>👑 Propietarios oficiales.</strong> Owners: <strong>nebulastriker0178</strong> y <strong>mayadivina2014</strong>. 🚫 Suplantar identidad = <strong>ban 2 semanas o permanente</strong>. ⚠️ Si la persona suplantada es staff, será expulsada del equipo.</div></div>
+
+          <div class="rule"><div class="num">16</div><div class="txt"><strong>🧠 Prohibido el perfeccionismo excesivo.</strong> El perfeccionismo puede causar estrés, retrasos y agotamiento. Si afecta al grupo, el staff puede intervenir. Objetivo: crear, colaborar y disfrutar.</div></div>
+
+          <div class="rule"><div class="num">17</div><div class="txt"><strong>📸 Uso de contenido con fines publicitarios.</strong> Los <strong>creadores de bots</strong> pueden usar capturas de mensajes <em>públicos</em> o interacciones con sus bots para publicidad o demos. <strong>No</strong> incluye conversaciones privadas (DMs) ni datos personales sensibles.</div></div>
+
+          <div class="rule"><div class="num">18</div><div class="txt"><strong>💰 Pago obligatorio antes de recibir el producto.</strong> Ningún bot o servicio será entregado antes del pago completo. Todo pedido implica una compra confirmada y no se realizará trabajo previo sin comprobante.</div></div>
+
+          <div class="rule"><div class="num">19</div><div class="txt"><strong>🧾 Reembolsos y cancelaciones.</strong> No se realizan devoluciones una vez entregado el producto. Solo se evaluará un reembolso si el bot no cumple funciones básicas prometidas <strong>y</strong> el fallo no es culpa del cliente (por ejemplo, falta de datos, configuraciones externas o uso indebido).</div></div>
+
+          <div class="rule"><div class="num">20</div><div class="txt"><strong>💼 Propiedad del código y uso comercial.</strong> El código de los bots vendidos sigue siendo <strong>propiedad de “Bot Buy”</strong>, a menos que se acuerde por escrito lo contrario. 🚫 Está prohibido revender, redistribuir o modificar el bot para uso comercial sin autorización del creador.</div></div>
+
+          <div class="rule"><div class="num">21</div><div class="txt"><strong>⏱️ Tiempos de entrega.</strong> El plazo de entrega dependerá de la complejidad del pedido <strong>y del tiempo disponible del creador.</strong> Se informará al comprador antes del pago; los plazos pueden variar por solicitudes adicionales o alta carga de trabajo.</div></div>
+
+          <div class="rule"><div class="num">22</div><div class="txt"><strong>✍️ Créditos del creador.</strong> El comprador no puede eliminar, ocultar ni modificar créditos del autor dentro del bot. Respetar el trabajo ajeno es parte del trato.</div></div>
+
+          <div class="rule"><div class="num">23</div><div class="txt"><strong>💳 Pago antes de entrega.</strong> Si un comprador <strong>insiste en que se cree o entregue el bot/producto antes de pagar</strong>, se le recordará varias veces que el pago debe realizarse primero. En caso de continuar, podrá ser sancionado por "Hacer caso omiso al Staff."</div></div>
+
+          <div class="rule"><div class="num">24</div><div class="txt"><strong>🧩 Cambios o personalizaciones.</strong> Toda modificación o función adicional que no esté incluida en el pedido original podrá tener un costo extra. El comprador será informado antes de realizar cualquier cambio.</div></div>
+
         </div>
 
-        <!-- Aviso importante insertado justo abajo de las reglas -->
         <div class="notice" role="status" aria-live="polite">
-          <div class="icon">⚖️</div>
-          <div class="text">
-            <strong>⚖️ Aviso importante —</strong> El equipo de <strong>Bot Buy</strong> se reserva el derecho de modificar, actualizar o añadir normas en cualquier momento, con el fin de mantener un ambiente seguro y funcional dentro del servidor.  
-            <br>🛡️ Al permanecer en este servidor, aceptas cumplir las normativas vigentes y futuras establecidas por el staff.
-          </div>
+          <div><strong>⚖️ Aviso importante —</strong> El equipo de <strong>Bot Buy</strong> se reserva el derecho de modificar, actualizar o añadir normas en cualquier momento para mantener un ambiente seguro y funcional. Al permanecer en este servidor, aceptas cumplir las normativas vigentes y futuras.</div>
         </div>
-
       </section>
 
-      <!-- Aside: resumen / precios / join -->
       <aside class="card aside">
         <h2>Resumen rápido</h2>
         <p style="color:var(--muted);font-size:14px;margin:6px 0 12px 0;">Compra = aceptas las reglas. No reembolsos salvo casos evaluados por fallo atribuible al producto. Respeta la privacidad y las normas del servidor principal cuando aplique.</p>
 
         <div style="margin-top:8px;">
           <h2 style="font-size:13px;margin-bottom:8px;color:#bfefff;">Tipos de Bots</h2>
-          <ul class="price-list" style="padding-left:18px;margin:0 0 12px 0;">
+          <ul class="price-list" style="padding-left:18px;margin:0 0 12px 0; color:var(--muted)">
             <li>Bot Básico — <strong>80 Robux</strong> · 5 comandos</li>
             <li>Bot Medio — <strong>150 Robux</strong> · 10 comandos</li>
             <li>Bot Intermedio — <strong>250 Robux</strong> · 18 comandos</li>
@@ -308,19 +180,12 @@
 
         <div style="margin-top:6px;">
           <h2 style="font-size:13px;margin-bottom:8px;color:#bfefff;">Soporte</h2>
-          <p style="color:var(--muted);font-size:14px;margin:0;">
-            ✔️ 1 mes de soporte desde la entrega.<br>
-            ✔️ Actualizaciones por hasta 2 meses.<br>
-            ⚠️ Problemas críticos: soporte sin límite, siempre que el bot no haya sido modificado por terceros.
-          </p>
+          <p style="color:var(--muted);font-size:14px;margin:0;">✔️ 1 mes de soporte desde la entrega.<br>✔️ Actualizaciones por hasta 2 meses.<br>⚠️ Problemas críticos: soporte sin límite, siempre que el bot no haya sido modificado por terceros.</p>
         </div>
 
-        <!-- Nueva sección: instrucciones de compra en Roblox -->
-        <div style="margin-top:12px; padding:12px; border-radius:10px; background: linear-gradient(180deg, rgba(75,0,130,0.08), rgba(75,0,130,0.04)); border:1px solid rgba(255,255,255,0.03);">
+        <div style="margin-top:12px; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(75,0,130,0.06), rgba(75,0,130,0.03)); border:1px solid rgba(255,255,255,0.03);">
           <h2 style="font-size:13px;margin:0 0 8px 0;color:#e6d7ff;">🎮 Compra en Roblox</h2>
-          <p style="color:var(--muted); font-size:14px; margin:0 0 8px 0;">
-            Para comprar dentro del juego debes entrar al siguiente link:
-          </p>
+          <p style="color:var(--muted);font-size:14px;margin:0 0 8px 0;">Para comprar dentro del juego debes entrar al siguiente link:</p>
           <p style="margin:0 0 10px 0;"><a style="color:#d6b6ff; text-decoration:underline;" href="https://www.roblox.com/es/games/114239814740083/Shop-Buy-Bot" target="_blank" rel="noopener noreferrer">🔗 Shop - Buy Bot (Roblox)</a></p>
 
           <ol style="color:var(--muted); font-size:14px; margin:0 0 8px 18px; line-height:1.45;">
@@ -329,60 +194,46 @@
             <li>🏪 <strong>Entra al juego y compra:</strong> Una vez vinculada, entra al juego de Roblox (link arriba) y realiza la compra del bot o del ítem que quieras dentro del juego.</li>
           </ol>
 
-          <p style="color:#f7d6a6; font-size:13px; margin-top:8px;">
-            ⚠️ Recuerda: comprar implica aceptar la política de <strong>no reembolsos</strong> salvo los casos descritos en las normas y las normas del servidor principal cuando apliquen.
-          </p>
+          <p style="color:#f7d6a6; font-size:13px; margin-top:8px;">⚠️ Recuerda: comprar implica aceptar la política de <strong>no reembolsos</strong> salvo los casos descritos en las normas y las normas del servidor principal cuando apliquen.</p>
         </div>
 
-        <div style="margin-top:14px;">
-          <a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:100%;text-align:center;">🎉 Unirse al Servidor Principal</a>
-        </div>
+        <div style="margin-top:14px;"><a class="btn btn-join" href="https://discord.gg/CZnzG2vwYa" target="_blank" rel="noopener noreferrer" style="display:inline-block;width:100%;text-align:center;">🎉 Unirse al Servidor Principal</a></div>
 
         <div class="note">Owners: <strong>nebulastriker0178</strong> · <strong>mayadivina2014</strong></div>
       </aside>
     </div>
 
-    <footer>
-      <div class="owners">Owners: nebulastriker0178 · mayadivina2014</div>
-    </footer>
+    <footer><div class="owners">Owners: nebulastriker0178 · mayadivina2014</div></footer>
   </main>
 
   <script>
-    (function(){
-      const pre = document.getElementById('preloader');
-      const main = document.getElementById('mainContent');
-      const progressBar = document.getElementById('progressBar');
+    // Search filter
+    const searchInput = document.getElementById('searchInput');
+    const rulesList = document.getElementById('rulesList');
+    const copyBtn = document.getElementById('copyBtn');
 
-      // generar un delay aleatorio entre 5000ms y 7000ms
-      const delay = Math.floor(5000 + Math.random() * 2000);
-      const startTime = Date.now();
-
-      // animar la barra de progreso para que llene según el delay
-      if (progressBar) {
-        progressBar.style.transition = `width ${delay}ms linear`;
-        progressBar.getBoundingClientRect();
-        progressBar.style.width = '100%';
-      }
-
-      function hidePreloader() {
-        pre.classList.add('hidden');
-        main.style.opacity = '1';
-        main.style.transform = 'translateY(0px)';
-      }
-
-      window.addEventListener('load', () => {
-        const elapsed = Date.now() - startTime;
-        const remaining = delay - elapsed;
-        setTimeout(hidePreloader, Math.max(0, remaining));
+    searchInput?.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      const rules = Array.from(rulesList.querySelectorAll('.rule'));
+      rules.forEach(r => {
+        const txt = r.innerText.toLowerCase();
+        r.style.display = txt.includes(q) ? 'grid' : 'none';
       });
+    });
 
-      setTimeout(() => {
-        if (!pre.classList.contains('hidden')) {
-          hidePreloader();
-        }
-      }, delay + 1200);
+    function printRules(){ window.print(); }
 
-    })();
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        const rules = Array.from(rulesList.querySelectorAll('.rule .txt')).map(n => n.innerText.trim()).join('\n\n');
+        await navigator.clipboard.writeText(rules);
+        copyBtn.textContent = '✅ Copiado';
+        setTimeout(()=> copyBtn.textContent = '📋 Copiar reglas', 1800);
+      } catch(e){
+        copyBtn.textContent = '⚠️ Error';
+        setTimeout(()=> copyBtn.textContent = '📋 Copiar reglas', 1800);
+      }
+    });
   </script>
 </body>
 </html>
