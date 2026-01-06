@@ -93,10 +93,11 @@
         /* Modales */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #120f1d; width: 90%; max-width: 900px; max-height: 85vh; border-radius: 30px; padding: 40px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
-        .modal-close { position: sticky; top: -20px; float: right; color: #ff4757; font-size: 2rem; cursor: pointer; }
+        .modal-close { position: sticky; top: -20px; float: right; color: #ff4757; font-size: 2rem; cursor: pointer; z-index: 10; }
         .rule-card { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .rule-card h4 { color: var(--popular); margin-bottom: 5px; }
+        .rule-card h4 { color: var(--popular); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .highlight { color: var(--warning); font-weight: bold; }
+        .section-divider { border-bottom: 1px solid rgba(255,255,255,0.1); margin: 30px 0; padding-bottom: 10px; color: var(--secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         footer { text-align: center; padding: 60px; font-size: 0.9rem; color: #4f545c; }
     </style>
@@ -181,7 +182,7 @@
 
     <div class="info-buttons">
         <button class="btn-info btn-rules" onclick="openModal('modalRules')">
-            <i class="fas fa-gavel"></i> Normativa General
+            <i class="fas fa-gavel"></i> Normativa Completa
         </button>
         <button class="btn-info btn-blacklist" onclick="openModal('modalBlacklist')">
             <i class="fas fa-user-slash"></i> Blacklist y Sanciones
@@ -191,14 +192,30 @@
     <div class="modal-overlay" id="modalRules">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal('modalRules')">&times;</span>
-            <h2 style="text-align: center; margin-bottom: 30px;">⚖️ Normativa Bot Buy</h2>
-            <div class="rule-card"><h4>1. ❌ Prohibido Raidear</h4><p>No se permite usar bots para atacar otros servidores.</p></div>
-            <div class="rule-card"><h4>2. 🛡️ Responsabilidad</h4><p>El uso es responsabilidad exclusiva del comprador.</p></div>
-            <div class="rule-card"><h4>13. 🛠️ Soporte</h4><p>1 mes de soporte técnico y hasta 2 meses para nuevos comandos.</p></div>
-            <div class="rule-card"><h4>15. 👑 Owners</h4><p>mayadivina2014 (1207376081431035965) y nebulastriker0178 (1299176504189653023).</p></div>
-            <div class="rule-card"><h4>18. 💰 Pagos</h4><p>Pago obligatorio antes de recibir el producto.</p></div>
-            <div class="rule-card"><h4>22. ✍️ Créditos</h4><p>Prohibido eliminar los créditos del creador.</p></div>
-            </div>
+            <h2 style="text-align: center; margin-bottom: 30px;">⚖️ Reglas del Servidor "Bot Buy"</h2>
+            
+            <div class="rule-card"><h4><i class="fas fa-ban"></i> Prohibido Raidear</h4><p>No se permite crear, vender o usar bots para atacar o interrumpir otros servidores.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-user-shield"></i> Responsabilidad</h4><p>El uso del bot es responsabilidad exclusiva del comprador. No nos hacemos responsables de usos indebidos.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-server"></i> Hosting</h4><p>No proporcionamos hosting. Recomendamos opciones como WispByte (bajo riesgo del usuario).</p></div>
+            <div class="rule-card"><h4><i class="fas fa-handshake"></i> Respeto</h4><p>Mantén un ambiente respetuoso. Faltas serán sancionadas según gravedad.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-lock"></i> Privacidad</h4><p>Prohibido compartir datos personales propios o de terceros (direcciones, claves, etc.).</p></div>
+            <div class="rule-card"><h4><i class="fas fa-bullhorn"></i> Spam/Flood</h4><p>Prohibido el envío masivo o publicidad no autorizada.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-virus-slash"></i> Seguridad</h4><p>Prohibida la distribución de malware o bots que comprometan la seguridad.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-users-slash"></i> Multicuentas</h4><p>No uses cuentas alternas para evadir sanciones o estafar.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-exclamation-triangle"></i> Contenido +18</h4><p>NSFW o pornografía resultará en kick o ban inmediato.</p></div>
+            
+            <div class="section-divider">Servicio y Soporte</div>
+            <div class="rule-card"><h4><i class="fas fa-headset"></i> Soporte Limitado</h4><p>1 mes de soporte técnico. Nuevos comandos: hasta 2 meses. Problemas críticos (no enciende) tienen soporte ilimitado si el bot es original.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-money-bill-wave"></i> Pago Obligatorio</h4><p>Ningún servicio se entrega antes del pago completo. No se realiza trabajo previo sin comprobante.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-undo"></i> Reembolsos</h4><p>No hay devoluciones una vez entregado. Solo se evalúa si el bot falla en funciones básicas prometidas.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-copyright"></i> Créditos</h4><p>Prohibido eliminar, ocultar o modificar créditos del autor. El código es propiedad de Bot Buy.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-clock"></i> Tiempos</h4><p>La entrega depende de la complejidad; se informará el plazo antes del pago.</p></div>
+
+            <div class="section-divider">Conducta y Staff</div>
+            <div class="rule-card"><h4><i class="fas fa-crown"></i> Owners Oficiales</h4><p>Owners: <span class="highlight">mayadivina2014</span> y <span class="highlight">nebulastriker0178</span>. Suplantarlos conlleva ban permanente.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-brain"></i> Sobre el Perfeccionismo</h4><p>Evita comportamientos obsesivos que causen retrasos o estrés al equipo. El staff intervendrá si afecta al servidor.</p></div>
+            <div class="rule-card"><h4><i class="fas fa-ad"></i> Publicidad</h4><p>Podemos usar capturas de interacciones (sin datos privados) para fines publicitarios de la tienda.</p></div>
+        </div>
     </div>
 
     <div class="modal-overlay" id="modalBlacklist">
@@ -208,38 +225,46 @@
             <p style="text-align: center; color: var(--warning); margin-bottom: 30px;">Pixel Alquimia Studios</p>
             
             <div class="rule-card">
-                <h4>1. 📑 Registro y Falsificación</h4>
-                <p>• <span class="highlight">Art. 1.2.</span> Falsificar datos anula la venta sin reembolso.</p>
+                <h4>1. Registro e Identidad</h4>
+                <p>• <span class="highlight">Art. 1.1.</span> Identificación obligatoria (Nombre real e ID de servidor).</p>
+                <p>• <span class="highlight">Art. 1.2.</span> Falsificar datos anula la venta sin derecho a reembolso.</p>
+                <p>• <span class="highlight">Art. 1.3.</span> La Blacklist es permanente para el Owner y la ID del servidor.</p>
             </div>
+
             <div class="rule-card">
-                <h4>2. ⚠️ Warns y Timeout</h4>
-                <p>• <span class="highlight">Art. 2.2.</span> 10 Warns = 2 semanas de Timeout sin soporte ni compras.</p>
+                <h4>2. Sanciones (Warns)</h4>
+                <p>• <span class="highlight">Causas:</span> Uso indebido, reclamos agresivos o traslados sin aviso.</p>
+                <p>• <span class="highlight">Art. 2.2.</span> 10 Warns = 2 semanas de Timeout total (sin soporte ni compras).</p>
             </div>
+
             <div class="rule-card">
-                <h4>3. 🕒 Soporte Extendido</h4>
-                <p>• <span class="highlight">Art. 3.2.</span> Soporte adicional (1-2 meses): 50 a 70 Robux.</p>
+                <h4>3. Soporte y Extensiones</h4>
+                <p>• <span class="highlight">Art. 3.2.</span> Soporte adicional (1-2 meses): costo de 50 a 70 Robux.</p>
+                <p>• <span class="highlight">Art. 3.3.</span> Sin extensión, no hay obligación de traslados o ajustes tras el vencimiento.</p>
             </div>
+
             <div class="rule-card">
-                <h4>4. ⚖️ Intimidación</h4>
-                <p>Amenazas o faltas graves resultan en Blacklist permanente inmediata.</p>
+                <h4>4. Faltas Graves</h4>
+                <p>Cualquier amenaza de "acción legal" por bienes virtuales resultará en Blacklist inmediata y permanente. Mantenemos un entorno de respeto total.</p>
             </div>
+
+            <p style="font-size: 0.8rem; opacity: 0.6; text-align: center;">Emitido por Bot Buy & Pixel Alquimia Studios</p>
         </div>
     </div>
 
     <footer>
         <p>Owners: <strong>mayadivina2014</strong> & <strong>nebulastriker0178</strong></p>
-        <p>&copy; 2024 Bot Buy - Pixel Alquimia Studios</p>
+        <p>&copy; 2026 Bot Buy - Pixel Alquimia Studios</p>
     </footer>
 </div>
 
 <script>
-    // Control de la Animación de Carga
     window.addEventListener('load', function() {
         const loader = document.getElementById('loader');
         setTimeout(() => {
             loader.style.opacity = '0';
             loader.style.visibility = 'hidden';
-        }, 1500); // 1.5 segundos de carga para que se aprecie
+        }, 1500);
     });
 
     function openModal(id) {
@@ -250,6 +275,14 @@
     function closeModal(id) {
         document.getElementById(id).style.display = 'none';
         document.body.style.overflow = 'auto';
+    }
+
+    // Cerrar modal al hacer clic fuera
+    window.onclick = function(event) {
+        if (event.target.className === 'modal-overlay') {
+            event.target.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
 </script>
 
