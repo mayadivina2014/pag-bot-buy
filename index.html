@@ -99,6 +99,23 @@
         .highlight { color: var(--warning); font-weight: bold; }
 
         footer { text-align: center; padding: 60px; font-size: 0.9rem; color: #4f545c; }
+
+        /* Barra Diagonal Próximamente */
+        .ribbon {
+            position: absolute;
+            top: 25px;
+            right: -35px;
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, var(--warning), #ff6b6b);
+            color: #000;
+            padding: 8px 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.3);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -189,6 +206,7 @@
                 <li><i class="fas fa-shield-alt"></i> Logs y Bienvenidas</li>
                 <li><i class="fas fa-lock"></i> Permisos Básicos</li>
             </ul>
+            <div class="ribbon">Próximamente</div>
             <a href="https://discord.gg/U8EhjsnvKC" class="btn-buy" style="background: #4CAF50;">Comprar</a>
         </div>
 
@@ -203,6 +221,7 @@
                 <li><i class="fas fa-chart-line"></i> Sistema de Niveles</li>
                 <li><i class="fas fa-microphone"></i> Voz Dinámica</li>
             </ul>
+            <div class="ribbon">Próximamente</div>
             <a href="https://discord.gg/U8EhjsnvKC" class="btn-buy" style="background: #FF9800;">Comprar</a>
         </div>
 
@@ -219,22 +238,8 @@
                 <li><i class="fas fa-link"></i> Integraciones Pro</li>
                 <li><i class="fas fa-headset"></i> Soporte VIP 7 días</li>
             </ul>
+            <div class="ribbon">Próximamente</div>
             <a href="https://discord.gg/U8EhjsnvKC" class="btn-buy" style="background: #f44336;">Comprar</a>
-        </div>
-
-        <div class="card">
-            <i class="fas fa-tachometer-alt" style="font-size: 2rem; color: #9C27B0; margin-bottom: 15px;"></i>
-            <h3>📊 Dashboard Básico</h3>
-            <div class="price">300 Robux</div>
-            <ul class="features">
-                <li><i class="fas fa-desktop"></i> Página Estática</li>
-                <li><i class="fas fa-eye"></i> Visualización de Info</li>
-                <li><i class="fas fa-server"></i> Datos del Servidor</li>
-                <li><i class="fas fa-robot"></i> Información del Bot</li>
-                <li><i class="fas fa-globe"></i> Hosting Gratuito</li>
-                <li><i class="fas fa-book"></i> Guía de Instalación</li>
-            </ul>
-            <a href="https://discord.gg/U8EhjsnvKC" class="btn-buy" style="background: #9C27B0;">Comprar</a>
         </div>
 
         <div class="card">
